@@ -23,6 +23,9 @@ This project is built using the following architecture:
 
 This project is built with a multi-service architecture. Each service is responsible for a specific task, and they communicate with each other to provide the final output.
 
+### 0. DB Setup
+After a summarize request is hit from the frontend, the request details is inserted in the db and later fetched in request history.
+
 ### 1. **Backend - Java Spring Boot**
    - **Build Tool**: Gradle
    - **Purpose**: A simple Spring Boot API server that will handle API requests from the frontend.
@@ -62,6 +65,56 @@ This project is built with a multi-service architecture. Each service is respons
 ## How to Run the Project
 
 This project consists of multiple services: Python FastAPI backend, Scala library for summarization, Spring Boot service, and React frontend. Below are the steps to run each part of the project.
+
+
+### 1. **DB Setup**
+
+Before running any services, you need to set up PostgreSQL and create the necessary table to store request history.
+
+#### 1.1 **Install PostgreSQL**
+
+If you haven’t already installed PostgreSQL, you can follow the official installation guide for your operating system:
+- [PostgreSQL Installation Guide](https://www.postgresql.org/download/)
+
+#### 1.2 **Create the `summarize_logs` Table**
+
+Once PostgreSQL is installed, follow these steps to create the required table:
+
+1. Log in to the PostgreSQL database with the following command:
+    ```bash
+    psql -U postgres
+    ```
+
+2. Create a new database `summarizer_db`:
+    ```sql
+    CREATE DATABASE summarizer_db;
+    ```
+
+3. Connect to the `summarizer_db` database:
+    ```sql
+    \c summarizer_db
+    ```
+
+4. Create the `summarize_logs` table with the following SQL:
+    ```sql
+    CREATE TABLE summarize_logs (
+        id SERIAL PRIMARY KEY,
+        url VARCHAR(255) NOT NULL,
+        summary TEXT NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    );
+    ```
+Example of configuration in a `application.conf` file of the scala library:
+
+```application.conf
+db {
+  url = "jdbc:postgresql://localhost:5432/summarizer_db"
+  user = "postgres"
+  password = "123456"
+}
+```
+
+(Make sure the password for the 'postgres' user you created is same as the one you enter in the application.conf.)
 
 ### 1. **Run Python FastAPI**
 
