@@ -1,0 +1,42 @@
+plugins {
+    id 'org.springframework.boot' version '3.1.0'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    all {
+        exclude group: 'org.gradle', module: 'gradle-logging'
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    
+    // Akka dependencies with proper logging
+    implementation 'com.typesafe.akka:akka-actor_2.13:2.6.21'
+    implementation 'com.typesafe.akka:akka-stream_2.13:2.6.21'
+    implementation 'com.typesafe.akka:akka-http_2.13:10.2.10'
+    implementation 'com.typesafe.akka:akka-slf4j_2.13:2.6.21'  // Add this for SLF4J support
+    
+    // Scala library dependency
+    implementation files('libs/scala-summarizer-lib-all.jar')
+
+    // Test dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    
+    // Remove PostgreSQL if not needed
+    // implementation 'org.postgresql:postgresql:42.7.3'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+springBoot {
+    mainClass = 'com.example.api.SummarizerApplication'
+}

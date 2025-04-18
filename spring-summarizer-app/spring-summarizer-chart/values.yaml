@@ -1,0 +1,38 @@
+image:
+  repository: spring-summarizer-app
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 8080
+
+resources: {}
+
+ingress:
+  enabled: false
+
+replicaCount: 1
+
+serviceAccount:
+  create: true
+  name: ""
+
+autoscaling:
+  enabled: false
+
+podAnnotations: {}
+
+podLabels: {}
+
+podSecurityContext: {}
+
+imagePullSecrets: []
+
+volumes: []
+
+nodeSelector: {}
+
+affinity: {}
+
+tolerations: {}
